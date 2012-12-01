@@ -19,6 +19,15 @@
 </head>
 <body>
 
+  <ul>
+    <% @venues.each do | venue | %>
+      <li>
+        <%= venue["location"]["lat"] %>
+        <%= venue["location"]["lng"] %>
+      </li>
+    <% end %>
+  </ul>
+
   <div id="map">
 
   </div>
@@ -35,6 +44,11 @@
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
         maxZoom: 18
     }).addTo(map);
+
+    <% @venues.each do | venue | %>
+      var marker = L.marker([<%= venue["location"]["lat"] %>, <%= venue["location"]["lng"] %>]).addTo(map);
+      marker.bindPopup("<%= venue["name"] %> - <%= venue["url"] %>");
+    <% end %>
   </script>
 
 </body>
