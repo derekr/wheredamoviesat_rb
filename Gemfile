@@ -1,3 +1,4 @@
 source 'http://rubygems.org'
 gem 'sinatra'
-gem 'foursquare2'
+gem 'sinatra-contrib'
+gem 'foursquare2', :github => 'derekr/foursquare2', :branch => 'venue-events'
