@@ -10,7 +10,11 @@
     <![endif]-->
 
     <style>
-      #map { height: 500px; }
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      html, body, #map { height: 100%; }
     </style>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -24,10 +28,6 @@
   </div>
 
   <script type="text/javascript">
-    // $.get('http://nominatim.openstreetmap.org/search/?city=San%20Francisco&state=CA&format=json', function (data) {
-    //   console.log(data);
-    //
-    // });
 
     var map = L.map('map').setView([37.7750, -122.4183], 13);
 
@@ -37,9 +37,21 @@
     }).addTo(map);
 
     <% @venues.each do | venue | %>
-      var marker = L.marker([<%= venue["location"]["lat"] %>, <%= venue["location"]["lng"] %>]).addTo(map);
-      marker.bindPopup("<%= venue["name"] %> - <%= venue["url"] %>");
+      $.get('venue/<%= venue["id"] %>/movies', function (data) {
+        var marker = L.marker([<%= venue["location"]["lat"] %>, <%= venue["location"]["lng"] %>]).addTo(map);
+        var content = "<%= venue["name"] %> - <%= venue["url"] %>";
+        content += '<ul>';
+        data.forEach(function (movie, i) {
+          // console.log(movie);
+          content += '<li>' + movie.name + '</li>'
+        });
+        content += '</ul>';
+        marker.bindPopup(content);
+
+        // console.log(data);
+      });
     <% end %>
+
   </script>
 
 </body>
