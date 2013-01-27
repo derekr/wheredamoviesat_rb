@@ -36,21 +36,26 @@
         maxZoom: 18
     }).addTo(map);
 
-    <% @venues.each do | venue | %>
-      $.get('venue/<%= venue["id"] %>/movies', function (data) {
-        var marker = L.marker([<%= venue["location"]["lat"] %>, <%= venue["location"]["lng"] %>]).addTo(map);
-        var content = "<%= venue["name"] %> - <%= venue["url"] %>";
-        content += '<ul>';
-        data.forEach(function (movie, i) {
-          // console.log(movie);
-          content += '<li>' + movie.name + '</li>'
-        });
-        content += '</ul>';
-        marker.bindPopup(content);
-
-        // console.log(data);
+    $.getJSON('venues', { location: 'San Francisco, CA' }, function (venues) {
+      
+      venues.forEach(function (venue, i) {
+        
+        $.getJSON('venue/' + venue.id + '/movies', function (movies) {
+          var marker = L.marker([venue.location.lat, venue.location.lng]).addTo(map);
+          var content = venue.name + ' - ' + venue.url;
+          
+          content += '<ul>';
+          movies.forEach(function (movie, i) {
+            content += '<li>' + movie.name + '</li>'
+          });
+          content += '</ul>';
+          marker.bindPopup(content);
+        })
+        
+        
       });
-    <% end %>
+      
+    });
 
   </script>
 
