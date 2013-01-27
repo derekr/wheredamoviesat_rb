@@ -17,11 +17,11 @@ end
 
 get '/venues' do
   lat = params['lat']
-  lon = params['lon']
+  lng = params['lng']
   
   client = get_client()
   @venues_result = client.search_venues(
-    :near => "#{lat},#{lon}",
+    :near => "#{lat},#{lng}",
     :categoryId => '4bf58dd8d48988d17f941735'
   )
   

@@ -29,18 +29,21 @@
 
   <script type="text/javascript">
 
-    var map = L.map('map').setView([37.7750, -122.4183], 13);
-
-    L.tileLayer('http://a.tile.cloudmade.com/b39f4c771f514bf5b3e3c3c7039433ad/997/256/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-        maxZoom: 18
-    }).addTo(map);
-
     navigator.geolocation.getCurrentPosition(load_theaters);
 
     function load_theaters(position) {
       
-      $.getJSON('venues', { lat: position.coords.latitude, lon: position.coords.longitude }, function (venues) {
+      var center = new L.LatLng(position.coords.latitude, position.coords.longitude);
+      // var center = new L.LatLng(40.7142, -74.0064); // Control NY
+      
+      var map = L.map('map').setView([center.lat, center.lng], 13);
+      
+      L.tileLayer('http://a.tile.cloudmade.com/b39f4c771f514bf5b3e3c3c7039433ad/997/256/{z}/{x}/{y}.png', {
+          attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+          maxZoom: 18
+      }).addTo(map);
+      
+      $.getJSON('venues', { lat: center.lat, lng: center.lng }, function (venues) {
         
         venues.forEach(function (venue, i) {
           
