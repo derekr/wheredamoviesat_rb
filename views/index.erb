@@ -36,26 +36,31 @@
         maxZoom: 18
     }).addTo(map);
 
-    $.getJSON('venues', { location: 'San Francisco, CA' }, function (venues) {
+    navigator.geolocation.getCurrentPosition(load_theaters);
+
+    function load_theaters(position) {
       
-      venues.forEach(function (venue, i) {
+      $.getJSON('venues', { lat: position.coords.latitude, lon: position.coords.longitude }, function (venues) {
         
-        $.getJSON('venue/' + venue.id + '/movies', function (movies) {
-          var marker = L.marker([venue.location.lat, venue.location.lng]).addTo(map);
-          var content = venue.name + ' - ' + venue.url;
+        venues.forEach(function (venue, i) {
           
-          content += '<ul>';
-          movies.forEach(function (movie, i) {
-            content += '<li>' + movie.name + '</li>'
-          });
-          content += '</ul>';
-          marker.bindPopup(content);
-        })
-        
+          $.getJSON('venue/' + venue.id + '/movies', function (movies) {
+            var marker = L.marker([venue.location.lat, venue.location.lng]).addTo(map);
+            var content = venue.name + ' - ' + venue.url;
+            
+            content += '<ul>';
+            movies.forEach(function (movie, i) {
+              content += '<li>' + movie.name + '</li>'
+            });
+            content += '</ul>';
+            marker.bindPopup(content);
+          })
+          
+          
+        });
         
       });
-      
-    });
+    }
 
   </script>
 
