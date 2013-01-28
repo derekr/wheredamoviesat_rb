@@ -49,7 +49,7 @@
           
           $.getJSON('venue/' + venue.id + '/movies', function (movies) {
             var marker = L.marker([venue.location.lat, venue.location.lng]).addTo(map);
-            var content = venue.name + ' - ' + venue.url;
+            var content = venue.name + ' - ' + '<a href="' + venue.url + '">' + venue.url + '</a>';
             
             content += '<ul>';
             movies.forEach(function (movie, i) {
